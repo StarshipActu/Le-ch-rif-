@@ -13,10 +13,17 @@ CYAN = (40, 196, 230)
 FOOTER = "starbase.texas.gov/beach-road-access"
 
 
+def _find(name):
+    for d in ("fonts", "assets", "."):
+        p = ROOT / d / name
+        if p.exists():
+            return p
+    raise FileNotFoundError(name)
+
+
 def font(size, mono=False, bold=True):
     name = ("DejaVuSansMono" if mono else "DejaVuSans") + ("-Bold" if bold else "") + ".ttf"
-    return ImageFont.truetype(str(ROOT / "fonts" / name), int(size * S))
-
+    return ImageFont.truetype(str(_find(name)), int(size * S))
 
 _logo = None
 
@@ -25,9 +32,10 @@ def logo():
     """Logo avec le fond blanc extérieur rendu transparent."""
     global _logo
     if _logo is None:
-        src = Path(ROOT / "assets" / "logo.webp")
-        if not src.exists():
-            src = ROOT / "assets" / "logo.png"
+               try:
+            src = _find("logo.webp")
+        except FileNotFoundError:
+            src = _find("logo.png")
         im = Image.open(src).convert("RGBA")
         flat = im.convert("RGB")
         key = (255, 0, 255)
