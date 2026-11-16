@@ -14,6 +14,7 @@ FOOTER = "starbase.texas.gov/beach-road-access"
 
 
 def _find(name):
+    """Cherche un fichier dans fonts/, assets/ ou à la racine du dépôt."""
     for d in ("fonts", "assets", "."):
         p = ROOT / d / name
         if p.exists():
@@ -25,6 +26,7 @@ def font(size, mono=False, bold=True):
     name = ("DejaVuSansMono" if mono else "DejaVuSans") + ("-Bold" if bold else "") + ".ttf"
     return ImageFont.truetype(str(_find(name)), int(size * S))
 
+
 _logo = None
 
 
@@ -32,7 +34,7 @@ def logo():
     """Logo avec le fond blanc extérieur rendu transparent."""
     global _logo
     if _logo is None:
-               try:
+        try:
             src = _find("logo.webp")
         except FileNotFoundError:
             src = _find("logo.png")
