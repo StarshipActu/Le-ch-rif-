@@ -109,7 +109,7 @@ def parse_roads(lines, now: datetime) -> list:
     sec = _section(lines, r"^road updates", r"public notice|^previous orders")
     text = "\n".join(sec)
     roads = []
-    for desc, date in re.findall(r"Description:\s*(.+?)\s*\n?\s*Date:\s*(.+)", text):
+    for desc, date in re.findall(r"Description:\s*(.+?)\s*\n?\s*Date:\s*(.+)", text, re.I):
         m = re.search(_DATE_RE + r"\s*(?:to|-|–)\s*" + _DATE_RE, date, re.I)
         if not m:
             continue
